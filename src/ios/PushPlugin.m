@@ -85,7 +85,13 @@
 
     isInline = NO;
 
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0){
+        //iOS8
+        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+        [[UIApplication sharedApplication] registerForRemoteNotifications]; // you can also set here for local notification.
+    }else{
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
+    }
 	
 	if (notificationMessage)			// if there is a pending startup notification
 		[self notificationReceived];	// go ahead and process it
